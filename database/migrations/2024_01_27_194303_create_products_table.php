@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('p_category')->constrained('prod_categories')->onUpdate('cascade');
+            $table->foreignId('g_category')->nullable(true)
+                ->constrained('group_categories')->onUpdate('cascade');
+            $table->foreignId('s_category')->nullable(true)
+                ->constrained('sub_categories')->onUpdate('cascade');
+            $table->string('name');
+            $table->string('manufacturer')->nullable(true);
+            $table->string('prod_img')->nullable(true);
+            $table->string('UPC')->unique('UPC');
             $table->timestamps();
         });
     }
@@ -22,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['p_category', 'g_category', 's_category']);
+        });
         Schema::dropIfExists('products');
     }
 };

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('site_products', function (Blueprint $table) {
             $table->id();
+            $table->string('UPC');
+            $table->foreign('UPC')->references('UPC')->on('products')
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->index('UPC');
+            $table->text('description')->nullable();
+            $table->json('gallery')->nullable();
+            $table->foreignId('status')->nullable()->constrained('prod_statuses')->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -22,6 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('site_products', function (Blueprint $table) {
+            $table->dropForeign(['UPC', 'status']);
+        });
         Schema::dropIfExists('site_products');
     }
 };

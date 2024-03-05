@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prod_storages', function (Blueprint $table) {
+        Schema::create('endoor_side_openings', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable(true);
-            $table->string('address')->nullable(true);
+            $table->set('name', ['L', 'R'])->nullable();
+            $table->set('display_name', ['Левое', 'Правое'])->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prod_storages');
+        Schema::dropIfExists('endoor_side_openings');
     }
 };
